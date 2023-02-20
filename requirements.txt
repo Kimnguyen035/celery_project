@@ -1,0 +1,4 @@
+djangorestframework
+django-redis
+mysqlclient
+django-celery-results
