@@ -1,31 +1,25 @@
 from django.db import models
 
-# Create your models here.
 class LogUser(models.Model):
     class Meta:
-        db_table = 'mypt_logs_user_behavior_logs'
+        db_table = 'mypt_ho_logs_user_behavior_logs'
+    
     log_id = models.AutoField(primary_key=True)
     user_id = models.BigIntegerField()
     email = models.CharField(max_length=255)
+    full_name = models.CharField(max_length=255)
     is_tin_pnc_emp = models.IntegerField()
+    job_title = models.CharField(max_length=255)
     child_depart = models.CharField(max_length=100)
     agency = models.CharField(max_length=30)
     parent_depart = models.CharField(max_length=30)
     branch = models.CharField(max_length=20)
+    function_code = models.CharField(max_length=255)
     function_name = models.CharField(max_length=255)
+    action_code = models.CharField(max_length=255)
     action_name = models.CharField(max_length=255)
-    device_id = models.CharField(max_length=255)
-    device_name = models.CharField(max_length=255)
-    device_token = models.CharField(max_length=255)
-    device_platform = models.CharField(max_length=20)
-    app_version = models.CharField(max_length=50)
+    service_name = models.CharField(max_length=100)
+    web_browser = models.CharField(max_length=100)
+    api_input = models.TextField()
     date_created = models.DateTimeField(auto_now_add=True)
     date_modified = models.DateTimeField(auto_now=True)
-
-class Test(models.Model):
-    class Meta:
-        db_table = 'test'
-    
-    id = models.BigAutoField(primary_key=True)
-    a = models.CharField(max_length=50)
-    b = models.CharField(max_length=50)

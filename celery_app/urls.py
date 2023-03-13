@@ -1,8 +1,7 @@
 from django.urls import path
-from .views import CeleryView
+from .views.log_user_view import *
 
 urlpatterns = [
-    path('test', CeleryView.as_view({'get':'test'}), name='test'),
-    path('getall', CeleryView.as_view({'get':'getall'}), name='getall'),
-    path('write_log', CeleryView.as_view({'post':'write_log'}), name='write_log'),
+    path('get-log-user', LogUserView.as_view({'get':'get_log_user'}), name='get_log_user'),
+    path('post-log-user', LogUserView.as_view({'post':'post_log_user'}), name='post_log_user'),
 ]

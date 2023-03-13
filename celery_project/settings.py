@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'celery_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'mypt', #'social_network',
+        'NAME': 'mypt_db', #'social_network',
         'USER': 'admin', #'root',
         'PASSWORD': '123456', #'0000',
         'HOST': 'localhost',
@@ -100,9 +100,29 @@ CACHES = {
     }
 }
 
+DATE_FORMAT = '%d-%m-%Y'
+
+DATETIME_FORMAT = '%d-%m-%Y %H:%M:%S'
+
+DATE_INPUT_FORMATS = [
+    '%d/%m/%Y',
+    '%Y-%m-%d',
+    '%d-%m-%Y',
+    '%Y/%m/%d'
+]
+
+DATETIME_INPUT_FORMATS = [
+    '%Y-%m-%d %H:%M:%S',
+    '%Y/%m/%d %H:%M:%S',
+    '%d-%m-%Y %H:%M:%S',
+    '%d/%m/%Y %H:%M:%S'
+]
+
 REST_FRAMEWORK = {
-    'DATE_INPUT_FORMATS': ['%d/%m/%Y', '%Y-%m-%d', '%d-%m-%Y', '%Y/%m/%d'],
-    'DATETIME_INPUT_FORMATS': ['%Y-%m-%d %H:%M:%S', '%Y/%m/%d %H:%M:%S', '%d-%m-%Y %H:%M:%S', "%d/%m/%Y %H:%M:%S"],
+    'DATE_FORMAT': DATE_FORMAT,
+    'DATETIME_FORMAT': DATETIME_FORMAT,
+    'DATE_INPUT_FORMATS': DATE_INPUT_FORMATS,
+    'DATETIME_INPUT_FORMATS': DATETIME_INPUT_FORMATS,
     'DEFAULT_RENDERER_CLASSES': [
         'rest_framework.renderers.JSONRenderer',
     ],

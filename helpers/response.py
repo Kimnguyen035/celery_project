@@ -19,18 +19,34 @@ def json_response(data=None, status=1, message="Success"):
     }
     return JsonResponse(result)
 
-def response_paginator(sum, per_page, data):
-    result = {
-        'max_page': ceil(sum/per_page),
-        'list_data': data
-    }
-    return response_data(data=result)
-
-def validate_error(data={}, status=STATUS['INPUT_INVALID']):
+def validate_error(data={}, status=4):
     data = dict(data)
     print(data)
     error_message = ''
     for key, value in data.items():
-        error_message += str(key) + ' ' + str(list(value)[0])# + '<br/>'
-        break
+        error_message += str(key) + ' ' + str(list(value)[0]) + '<br/>'
     return response_data(status=status, message=error_message)
+
+def response_paginator(sum, per_page, data):
+    result = {
+        'max_page': ceil(sum/per_page),
+        'number_row': sum,
+        'list_data': data
+    }
+    return response_data(data=result)
+
+# def response_paginator(sum, per_page, data):
+#     result = {
+#         'max_page': ceil(sum/per_page),
+#         'list_data': data
+#     }
+#     return response_data(data=result)
+
+# def validate_error(data={}, status=STATUS['INPUT_INVALID']):
+#     data = dict(data)
+#     print(data)
+#     error_message = ''
+#     for key, value in data.items():
+#         error_message += str(key) + ' ' + str(list(value)[0])# + '<br/>'
+#         break
+#     return response_data(status=status, message=error_message)

@@ -1,0 +1,10 @@
+DATETIME_FORMAT3 = '%Y%m%d_%H%M%S'
+
+DATETIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_FORMAT = '%Y-%m-%d'
+DATE_EXPORT = '%d/%m/%Y'
+DATETIME_FORMAT_EXPORT = '%d/%m/%Y %H:%M:%S'
+
+
+FORMAT_DATE_DEFAULT = "%d/%m/%Y"
+FORMAT_DATETIME_DEFAULT = "%d/%m/%Y %H:%M:%S"
