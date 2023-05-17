@@ -28,59 +28,24 @@ class LogUserView(ViewSet):
         return response_data(data_log.data)
     
     def data_log_user(self, data, data_token):
-        key_data_input = data.keys()
-        if 'apiRoute' not in key_data_input:
-            data['apiRoute'] = None
+        if 'input' in data.keys():
+            data_input = data['input']
+        else:
+            data_input = data
         queryset = LogRouteAction.objects.filter(web_route=data['webRoute'], api_route=data['apiRoute'])
         if not queryset.exists():
             return False, {}
-        if len(queryset.values()) > 1:
-            json_params_check = LogRouteActionSerializer(queryset,many=True)
-            for json_param in json_params_check.data:
-                json_param_tamp = json.loads(json_param['jsonParamsRequired'])
-                for key in json_param_tamp.keys():
-                    if key in key_data_input and json_param_tamp[key] == data[key]:
-                        try:
-                            log_route_action = LogRouteAction.objects.get(web_route=data['webRoute'], api_route=data['apiRoute'],  json_params_required=json_param['jsonParamsRequired'])
-                        except:
-                            return False, {}
-                        data_log = LogRouteActionSerializer(log_route_action)
-                        data_token['functionCode'] = data_log.data['functionCode']
-                        data_token['functionName'] = data_log.data['functionName']
-                        data_token['actionCode'] = data_log.data['actionCode']
-                        data_token['actionName'] = data_log.data['actionName']
-                        data_token['serviceName'] = data_log.data['serviceName']
-                    elif key in key_data_input and json_param_tamp[key] != '':
-                        try:
-                            log_route_action = LogRouteAction.objects.get(web_route=data['webRoute'], api_route=data['apiRoute'],  json_params_required=json_param['jsonParamsRequired'])
-                        except:
-                            return False, {}
-                        data_log = LogRouteActionSerializer(log_route_action)
-                        data_token['functionCode'] = data_log.data['functionCode']
-                        data_token['functionName'] = data_log.data['functionName']
-                        data_token['actionCode'] = data_log.data['actionCode']
-                        data_token['actionName'] = data_log.data['actionName']
-                        data_token['serviceName'] = data_log.data['serviceName']
-                        break
-                    elif key not in key_data_input and json_param_tamp[key] == '':
-                        try:
-                            log_route_action = LogRouteAction.objects.get(web_route=data['webRoute'], api_route=data['apiRoute'],  json_params_required=json_param['jsonParamsRequired'])
-                        except:
-                            return False, {}
-                        data_log = LogRouteActionSerializer(log_route_action)
-                        data_token['functionCode'] = data_log.data['functionCode']
-                        data_token['functionName'] = data_log.data['functionName']
-                        data_token['actionCode'] = data_log.data['actionCode']
-                        data_token['actionName'] = data_log.data['actionName']
-                        data_token['serviceName'] = data_log.data['serviceName']
-                        break
-        else:
-            data_log = LogRouteActionSerializer(queryset.values()[0])
-            data_token['functionCode'] = data_log.data['functionCode']
-            data_token['functionName'] = data_log.data['functionName']
-            data_token['actionCode'] = data_log.data['actionCode']
-            data_token['actionName'] = data_log.data['actionName']
-            data_token['serviceName'] = data_log.data['serviceName']
+        if queryset.count() > 1:
+            json_params_check = LogRouteActionSerializer(queryset, many=True)
+            validation = InputValidate(data={'actionRoute':json_params_check.data,'data':data_input})
+            if not validation.is_valid():
+                return False, {}
+            try:
+                queryset = queryset.filter(json_params_required=validation.data['str_json_param_required'])
+            except:
+                return False, {}
+        data_log = LogRouteActionSerializer(queryset.values()[0], fields=['functionCode','functionName','actionCode','actionName','serviceName'])
+        data_token.update(data_log.data)
         data_token['webBrower'] = None
         data_token['apiInput'] = json.dumps(data)
         return True, data_token

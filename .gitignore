@@ -1,10 +1,2 @@
+**/__pycache__
 ./venv/
-
-celery_project/__pycache__
-
-celery_app/__pycache__
-celery_app/migrations/__pycache__
-
-configs/__pycache__
-
-helpers/__pycache__
